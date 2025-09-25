@@ -16,11 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from routes.views import home_view, admin_panel_view
+from routes.views import home_view
 
 urlpatterns = [
     path('', home_view, name='home'),
-    path('admin/', admin_panel_view, name='admin-panel'),
     path('django-admin/', admin.site.urls),
     path('api/', include('routes.urls')),
 ]

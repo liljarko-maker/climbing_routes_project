@@ -23,6 +23,10 @@ urlpatterns = [
     path('google-sheets/import/', views.import_from_google_sheets, name='import-from-google-sheets'),
     path('google-sheets/status/', views.google_sheets_status, name='google-sheets-status'),
     path('google-sheets/routes/', views.google_sheets_routes, name='google-sheets-routes'),
+    
+    # Аутентификация
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
     path('admin/', views.admin_panel_view, name='admin-panel'),
     
     # Экспорт данных

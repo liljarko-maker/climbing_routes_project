@@ -162,7 +162,7 @@ function filterRoutes() {
     
     filteredRoutes = allRoutes.filter(route => {
         // Фильтр по сложности
-        if (difficulty && !route.difficulty.includes(difficulty)) {
+        if (difficulty && route.difficulty !== difficulty) {
             return false;
         }
         
@@ -297,7 +297,7 @@ function createFilteredResultsHTML(container) {
                 <td><strong>№${route.routeNumber}</strong></td>
                 <td><span class="badge bg-info">${route.trackLane}</span></td>
                 <td><strong>${route.name}</strong></td>
-                <td><span class="badge difficulty-${route.difficulty.toLowerCase()}">${route.difficulty}</span></td>
+                <td><span class="badge difficulty-${route.difficulty}">${route.difficulty}</span></td>
                 <td><span class="badge color-cell color-${route.color.toLowerCase()}" style="background-color: ${route.color.toLowerCase()};">${route.color}</span></td>
                 <td>${route.author}</td>
                 <td>${route.setupDate}</td>

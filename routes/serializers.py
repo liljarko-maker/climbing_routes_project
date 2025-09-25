@@ -24,7 +24,7 @@ class RouteSerializer(serializers.ModelSerializer):
             'is_active',
             'created_at'
         ]
-        read_only_fields = ['id', 'created_at']
+        read_only_fields = ['id', 'route_number', 'created_at']
 
     def validate_difficulty(self, value):
         """Валидация уровня сложности"""
@@ -51,10 +51,18 @@ class RouteSerializer(serializers.ModelSerializer):
         return value.strip()
     
     def validate_route_number(self, value):
-        """Валидация номера трассы"""
-        if value < 1 or value > 140:
-            raise serializers.ValidationError("Номер трассы должен быть от 1 до 140")
+        """Валидация номера трассы (автоматический)"""
+        # Номер трассы назначается автоматически, валидация не нужна
         return value
+    
+    def create(self, validated_data):
+        """Создание новой трассы с автоматическим назначением номера"""
+        # Убираем route_number из validated_data, если он есть
+        validated_data.pop('route_number', None)
+        
+        # Создаем трассу - метод save() автоматически назначит номер
+        route = Route.objects.create(**validated_data)
+        return route
     
     def validate_track_lane(self, value):
         """Валидация номера дорожки"""

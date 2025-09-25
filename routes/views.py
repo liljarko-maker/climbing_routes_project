@@ -5,12 +5,14 @@ from rest_framework.views import APIView
 from django.db.models import Q
 from django.db import transaction
 from django.core.exceptions import ValidationError
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.utils import timezone
 import logging
 import csv
 from datetime import datetime
 from django.http import HttpResponse
-from .models import Route
+from .models import Route, AdminUser
 from .serializers import RouteSerializer
 # from .google_sheets import RoutesGoogleSheetsSync  # Отключено, используем SQLite
 
@@ -138,7 +140,10 @@ class RouteDetailView(generics.RetrieveUpdateDestroyAPIView):
             route_name = instance.name
             route_id = instance.id
             instance.delete()
-            logger.info(f"Удалена трасса: {route_name} (ID: {route_id})")
+            
+            # Перенумеровываем оставшиеся трассы
+            Route.renumber_routes()
+            logger.info(f"Удалена трасса: {route_name} (ID: {route_id}) и выполнена перенумерация")
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Route.DoesNotExist:
             logger.warning(f"Трасса с ID {kwargs.get('pk')} не найдена")
@@ -268,6 +273,11 @@ class RouteBulkOperationsView(APIView):
                     except Route.DoesNotExist:
                         not_found_ids.append(route_id)
                         logger.warning(f"Трасса с ID {route_id} не найдена для массового удаления")
+
+            # Перенумеровываем оставшиеся трассы
+            if deleted_count > 0:
+                Route.renumber_routes()
+                logger.info(f"Выполнена перенумерация после удаления {deleted_count} трасс")
 
             response_data = {
                 'deleted_count': deleted_count,
@@ -547,8 +557,8 @@ def home_view(request):
         from datetime import datetime, timedelta
         
         # Получаем данные из SQLite базы данных
-        all_routes = Route.objects.all()
-        active_routes = Route.objects.filter(is_active=True)
+        all_routes = Route.objects.all().order_by('track_lane', 'route_number')
+        active_routes = Route.objects.filter(is_active=True).order_by('track_lane', 'route_number')
         
         # Получаем текущую дату
         today = datetime.now().date()
@@ -860,3 +870,91 @@ def export_routes_csv(request):
     except Exception as e:
         logger.error(f"Ошибка при экспорте CSV: {str(e)}")
         return HttpResponse(f"Ошибка при экспорте: {str(e)}", status=500)
+
+
+def login_view(request):
+    """Страница входа в админ панель"""
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        try:
+            admin = AdminUser.objects.get(username=username, is_active=True)
+            if admin.check_password(password):
+                # Успешный вход
+                admin.last_login = timezone.now()
+                admin.save()
+                
+                # Сохраняем ID администратора в сессии
+                request.session['admin_id'] = admin.id
+                request.session['admin_username'] = admin.username
+                request.session['admin_name'] = admin.full_name
+                
+                logger.info(f"Успешный вход администратора: {admin.username}")
+                return redirect('admin-panel')
+            else:
+                error = "Неверный пароль"
+        except AdminUser.DoesNotExist:
+            error = "Пользователь не найден"
+        except Exception as e:
+            logger.error(f"Ошибка при входе: {str(e)}")
+            error = "Ошибка при входе в систему"
+    else:
+        error = None
+    
+    return render(request, 'login.html', {'error': error})
+
+
+def logout_view(request):
+    """Выход из админ панели"""
+    if 'admin_id' in request.session:
+        logger.info(f"Выход администратора: {request.session.get('admin_username')}")
+        del request.session['admin_id']
+        del request.session['admin_username']
+        del request.session['admin_name']
+    
+    return redirect('login')
+
+
+def check_admin_auth(request):
+    """Проверка аутентификации администратора"""
+    return 'admin_id' in request.session
+
+
+def admin_panel_view(request):
+    """Админ панель с проверкой аутентификации"""
+    # Проверяем аутентификацию
+    if not check_admin_auth(request):
+        return redirect('login')
+    
+    # Получаем информацию об администраторе
+    admin_id = request.session.get('admin_id')
+    try:
+        admin = AdminUser.objects.get(id=admin_id)
+    except AdminUser.DoesNotExist:
+        # Если администратор не найден, очищаем сессию
+        request.session.flush()
+        return redirect('login')
+    
+    # Получаем все трассы
+    routes = Route.objects.all().order_by('track_lane', 'route_number')
+    
+    # Получаем уникальные значения для фильтров
+    difficulties = sorted(set(Route.objects.values_list('difficulty', flat=True)))
+    authors = sorted(set(Route.objects.values_list('author', flat=True)))
+    colors = sorted(set(Route.objects.values_list('color', flat=True)))
+    
+    context = {
+        'routes': routes,
+        'difficulties': difficulties,
+        'authors': authors,
+        'colors': colors,
+        'admin_name': admin.full_name,
+        'admin_username': admin.username,
+        'total_routes': routes.count(),
+        'active_routes': routes.filter(is_active=True).count(),
+        'inactive_routes': routes.filter(is_active=False).count(),
+    }
+    
+    logger.info(f"Загружена админ-панель с {routes.count()} трассами из SQLite")
+    return render(request, 'admin_panel.html', context)

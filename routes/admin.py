@@ -32,12 +32,13 @@ class RouteAdmin(admin.ModelAdmin):
         'description'
     ]
     list_editable = ['is_active']
-    readonly_fields = ['created_at']
+    readonly_fields = ['created_at', 'route_number']
     ordering = ['route_number']
     
     fieldsets = (
         ('Нумерация', {
-            'fields': ('route_number', 'track_lane')
+            'fields': ('route_number', 'track_lane'),
+            'description': 'Номер трассы назначается автоматически'
         }),
         ('Основная информация', {
             'fields': ('name', 'difficulty', 'author', 'color')

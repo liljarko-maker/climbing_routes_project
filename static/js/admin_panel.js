@@ -41,6 +41,15 @@ function showAddRouteModal() {
     document.getElementById('routeModalTitle').textContent = 'Добавить трассу';
     document.getElementById('routeForm').reset();
     
+    // Сбрасываем выпадающие списки
+    document.getElementById('trackLane').value = '';
+    document.getElementById('difficulty').value = '';
+    document.getElementById('color').value = '';
+    document.getElementById('author').value = '';
+    document.getElementById('newAuthor').style.display = 'none';
+    document.getElementById('newAuthor').value = '';
+    document.getElementById('newAuthor').required = false;
+    
     // Устанавливаем текущую дату
     const today = new Date();
     const dateString = today.toLocaleDateString('ru-RU');
@@ -64,7 +73,6 @@ function editRoute(routeId) {
     }
     
     // Заполняем форму данными трассы
-    document.getElementById('trackNumber').value = routeId;
     document.getElementById('routeName').value = routeData.name;
     document.getElementById('difficulty').value = getDifficultyFromRow(routeId);
     document.getElementById('color').value = routeData.color;
@@ -106,13 +114,22 @@ function saveRoute() {
         return;
     }
     
+    // Получаем автора (либо из списка, либо новый)
+    let author = document.getElementById('author').value;
+    if (author === '__new__') {
+        author = document.getElementById('newAuthor').value.trim();
+        if (!author) {
+            alert('Введите имя нового автора');
+            return;
+        }
+    }
+    
     const routeData = {
-        track_number: parseInt(document.getElementById('trackNumber').value),
         track_lane: parseInt(document.getElementById('trackLane').value),
         name: document.getElementById('routeName').value,
         difficulty: document.getElementById('difficulty').value,
         color: document.getElementById('color').value,
-        author: document.getElementById('author').value,
+        author: author,
         setup_date: document.getElementById('setupDate').value,
         description: document.getElementById('description').value,
         is_active: document.getElementById('isActive').checked
@@ -149,7 +166,9 @@ function saveRoute() {
         if (response.ok) {
             return response.json();
         } else {
-            throw new Error('Ошибка при сохранении трассы');
+            return response.json().then(errorData => {
+                throw new Error(JSON.stringify(errorData));
+            });
         }
     })
     .then(data => {
@@ -158,7 +177,18 @@ function saveRoute() {
     })
     .catch(error => {
         console.error('Ошибка:', error);
-        alert('Ошибка при сохранении трассы: ' + error.message);
+        let errorMessage = 'Ошибка при сохранении трассы';
+        try {
+            const errorData = JSON.parse(error.message);
+            if (errorData.detail) {
+                errorMessage = errorData.detail;
+            } else if (typeof errorData === 'object') {
+                errorMessage = Object.values(errorData).flat().join(', ');
+            }
+        } catch (e) {
+            errorMessage = error.message;
+        }
+        alert(errorMessage);
     });
 }
 
@@ -299,4 +329,20 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+// Обработка изменения автора
+function handleAuthorChange() {
+    const authorSelect = document.getElementById('author');
+    const newAuthorInput = document.getElementById('newAuthor');
+    
+    if (authorSelect.value === '__new__') {
+        newAuthorInput.style.display = 'block';
+        newAuthorInput.required = true;
+        newAuthorInput.focus();
+    } else {
+        newAuthorInput.style.display = 'none';
+        newAuthorInput.required = false;
+        newAuthorInput.value = '';
+    }
 }
