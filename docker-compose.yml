@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  climbing-routes:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./climbing_routes_project:/app/climbing_routes_project
+      - ./routes:/app/routes
+      - ./manage.py:/app/manage.py
+    environment:
+      - DEBUG=True
+    restart: unless-stopped

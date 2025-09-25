@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Трасс Скалодрома - Демонстрация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 10px;
+        }
+        
+        .get { background: #28a745; color: white; }
+        .post { background: #007bff; color: white; }
+        .put { background: #ffc107; color: black; }
+        .patch { background: #fd7e14; color: white; }
+        .delete { background: #dc3545; color: white; }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .feature-list li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            top: 10px;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin: 5px;
+        }
+        
+        .status.ready { background: #d4edda; color: #155724; }
+        .status.pending { background: #fff3cd; color: #856404; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏔️ API Трасс Скалодрома</h1>
+            <p>Полнофункциональная система учета трасс с REST API</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>📊 Статус проекта</h2>
+                <div class="status ready">✅ Проект создан</div>
+                <div class="status ready">✅ API готово</div>
+                <div class="status ready">✅ Документация</div>
+                <div class="status pending">⏳ Требует установки</div>
+                
+                <div class="alert alert-info">
+                    <strong>Готово к запуску!</strong><br>
+                    Проект полностью создан и готов к использованию. 
+                    Требуется только установка зависимостей.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🚀 Способы запуска</h2>
+                <div class="endpoint">
+                    <span class="method get">Docker</span>
+                    <code>./start.sh</code>
+                </div>
+                <div class="endpoint">
+                    <span class="method get">Локально</span>
+                    <code>pip3 install -r requirements.txt</code>
+                </div>
+                <div class="endpoint">
+                    <span class="method get">Homebrew</span>
+                    <code>brew install python</code>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <strong>Требуется:</strong> Python 3.8+, Django 4.2+, DRF 3.14+
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🔧 API Endpoints</h2>
+            
+            <h3>Основные CRUD операции:</h3>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/routes/</code> - Список всех трасс
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/routes/</code> - Создание новой трассы
+            </div>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/routes/{id}/</code> - Получение трассы
+            </div>
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <code>/api/routes/{id}/</code> - Обновление трассы
+            </div>
+            <div class="endpoint">
+                <span class="method patch">PATCH</span>
+                <code>/api/routes/{id}/</code> - Частичное обновление
+            </div>
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <code>/api/routes/{id}/</code> - Удаление трассы
+            </div>
+
+            <h3>Массовые операции:</h3>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/routes/bulk/</code> - Массовое создание
+            </div>
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <code>/api/routes/bulk/</code> - Массовое удаление
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/routes/bulk-update/</code> - Массовое обновление
+            </div>
+
+            <h3>Поиск и фильтрация:</h3>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/routes/search/</code> - Расширенный поиск
+            </div>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/routes/authors/</code> - Список авторов
+            </div>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/routes/colors/</code> - Список цветов
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/routes/{id}/toggle-active/</code> - Переключение статуса
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>✨ Возможности</h2>
+            <ul class="feature-list">
+                <li>Полный CRUD функционал для трасс</li>
+                <li>Массовые операции (создание/удаление/обновление)</li>
+                <li>Расширенный поиск с множественными критериями</li>
+                <li>Фильтрация по сложности, автору, цвету, дате</li>
+                <li>Сортировка по любому полю</li>
+                <li>Пагинация результатов</li>
+                <li>Статистика по всем параметрам</li>
+                <li>Логирование всех операций</li>
+                <li>Валидация данных и обработка ошибок</li>
+                <li>Админ-панель Django</li>
+                <li>REST API с JSON ответами</li>
+                <li>Тестовые скрипты</li>
+                <li>Docker поддержка</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>📝 Примеры использования</h2>
+            
+            <h3>Создание трассы:</h3>
+            <div class="code-block">
+curl -X POST http://127.0.0.1:8000/api/routes/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Красная линия",
+    "difficulty": "medium",
+    "author": "Иван Петров",
+    "color": "красный",
+    "description": "Интересная трасса"
+  }'
+            </div>
+
+            <h3>Поиск по сложности:</h3>
+            <div class="code-block">
+curl "http://127.0.0.1:8000/api/routes/search/?difficulty=medium"
+            </div>
+
+            <h3>Массовое создание:</h3>
+            <div class="code-block">
+curl -X POST http://127.0.0.1:8000/api/routes/bulk/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "routes": [
+      {
+        "name": "Трасса 1",
+        "difficulty": "easy",
+        "author": "Автор 1",
+        "color": "зеленый"
+      }
+    ]
+  }'
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📁 Структура проекта</h2>
+            <div class="code-block">
+climbing_routes_project/
+├── climbing_routes_project/     # Настройки Django
+├── routes/                      # Приложение трасс
+│   ├── models.py               # Модели данных
+│   ├── views.py                # API представления
+│   ├── serializers.py          # Сериализаторы
+│   ├── urls.py                 # URL маршруты
+│   └── admin.py                # Админ-панель
+├── manage.py                   # Управление Django
+├── requirements.txt            # Зависимости
+├── Dockerfile                  # Docker образ
+├── docker-compose.yml          # Docker Compose
+├── test_api.py                 # Тесты API
+├── demo.py                     # Демонстрация
+└── README.md                   # Документация
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🎯 Следующие шаги</h2>
+            <div class="alert alert-info">
+                <strong>Для запуска проекта выберите один из способов:</strong>
+            </div>
+            
+            <a href="#" class="btn" onclick="showInstallation('docker')">🐳 Docker</a>
+            <a href="#" class="btn" onclick="showInstallation('local')">💻 Локально</a>
+            <a href="#" class="btn" onclick="showInstallation('homebrew')">🍺 Homebrew</a>
+            
+            <div id="installation-steps" style="display: none; margin-top: 20px;">
+                <div class="code-block" id="installation-code"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📚 Документация</h2>
+            <p>Подробная документация доступна в файлах:</p>
+            <ul>
+                <li><strong>README.md</strong> - основная документация API</li>
+                <li><strong>SETUP.md</strong> - инструкции по установке</li>
+                <li><strong>test_api.py</strong> - примеры тестирования</li>
+                <li><strong>demo.py</strong> - демонстрация возможностей</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showInstallation(type) {
+            const steps = {
+                docker: `# Установите Docker Desktop
+# https://www.docker.com/products/docker-desktop
+
+# Запуск проекта
+./start.sh
+
+# Или вручную
+docker-compose up --build`,
+
+                local: `# Установите инструменты разработки
+xcode-select --install
+
+# Установите зависимости
+pip3 install -r requirements.txt
+
+# Примените миграции
+python3 manage.py migrate
+
+# Загрузите тестовые данные
+python3 manage.py load_sample_data
+
+# Запустите сервер
+python3 manage.py runserver`,
+
+                homebrew: `# Установите Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Установите Python
+brew install python
+
+# Установите зависимости
+pip3 install -r requirements.txt
+
+# Запустите проект
+python3 manage.py migrate
+python3 manage.py runserver`
+            };
+
+            document.getElementById('installation-code').textContent = steps[type];
+            document.getElementById('installation-steps').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

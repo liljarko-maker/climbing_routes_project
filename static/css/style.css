@@ -1,0 +1,1053 @@
+/* Основные стили */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Навигация */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-brand i {
+    margin-right: 0.5rem;
+}
+
+/* Карточки статистики */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+    font-weight: 600;
+}
+
+/* Статистические карточки */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-warning,
+.card.bg-info {
+    background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-primary-dark) 100%);
+}
+
+.card.bg-success {
+    background: linear-gradient(135deg, var(--bs-success) 0%, #28a745 100%);
+}
+
+.card.bg-warning {
+    background: linear-gradient(135deg, var(--bs-warning) 0%, #ffc107 100%);
+}
+
+.card.bg-info {
+    background: linear-gradient(135deg, var(--bs-info) 0%, #17a2b8 100%);
+}
+
+/* Иконки в статистике */
+.card-body i.fa-2x {
+    opacity: 0.8;
+}
+
+/* Таблица */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table thead th {
+    background-color: #495057;
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Бейджи */
+.badge {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+}
+
+/* API результат */
+#api-result {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* Форма */
+.form-control,
+.form-select {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Кнопки */
+.btn {
+    border-radius: 10px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .card-body h3 {
+        font-size: 1.5rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+}
+
+/* ===== СТИЛИ ДЛЯ СЛОЖНОСТИ ТРАСС ===== */
+/* Новые чистые стили для сложности */
+
+/* Стили для основной таблицы на главной странице */
+#routes-table .badge.difficulty-4,
+#routes-table .badge.difficulty-4-5,
+#routes-table .badge.difficulty-5,
+#routes-table .badge.difficulty-5\+ {
+    background-color: #ffc107 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-6a,
+#routes-table .badge.difficulty-6a\+ {
+    background-color: #28a745 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-6b,
+#routes-table .badge.difficulty-6b\+ {
+    background-color: #007bff !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-6c,
+#routes-table .badge.difficulty-6c\+ {
+    background-color: #6f42c1 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-7a,
+#routes-table .badge.difficulty-7a\+ {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-7b,
+#routes-table .badge.difficulty-7b+,
+#routes-table .badge.difficulty-7c,
+#routes-table .badge.difficulty-7c+,
+#routes-table .badge.difficulty-8a,
+#routes-table .badge.difficulty-8a+,
+#routes-table .badge.difficulty-8b,
+#routes-table .badge.difficulty-8b+,
+#routes-table .badge.difficulty-8c,
+#routes-table .badge.difficulty-9a {
+    background-color: #000000 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* Стили для таблицы результатов фильтрации */
+#filtered-results .badge.difficulty-4,
+#filtered-results .badge.difficulty-4-5,
+#filtered-results .badge.difficulty-5,
+#filtered-results .badge.difficulty-5\+ {
+    background-color: #ffc107 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#filtered-results .badge.difficulty-6a,
+#filtered-results .badge.difficulty-6a\+ {
+    background-color: #28a745 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#filtered-results .badge.difficulty-6b,
+#filtered-results .badge.difficulty-6b\+ {
+    background-color: #007bff !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#filtered-results .badge.difficulty-6c,
+#filtered-results .badge.difficulty-6c\+ {
+    background-color: #6f42c1 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#filtered-results .badge.difficulty-7a,
+#filtered-results .badge.difficulty-7a\+ {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#filtered-results .badge.difficulty-7b,
+#filtered-results .badge.difficulty-7b+,
+#filtered-results .badge.difficulty-7c,
+#filtered-results .badge.difficulty-7c+,
+#filtered-results .badge.difficulty-8a,
+#filtered-results .badge.difficulty-8a+,
+#filtered-results .badge.difficulty-8b,
+#filtered-results .badge.difficulty-8b+,
+#filtered-results .badge.difficulty-8c,
+#filtered-results .badge.difficulty-9a {
+    background-color: #000000 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* Специфичные стили для таблицы маршрутов - удалены */
+
+/* Максимально специфичные стили - удалены */
+
+/* Загрузка */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Уведомления */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Подвал */
+footer {
+    margin-top: auto;
+}
+
+/* Дополнительные утилиты */
+.text-gradient {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.shadow-custom {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для кода */
+code {
+    background-color: #f8f9fa;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #e83e8c;
+}
+
+/* Стили для списков API */
+.list-unstyled li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.list-unstyled li:last-child {
+    border-bottom: none;
+}
+
+/* Стили для иконок в заголовках */
+h2 i, h3 i {
+    margin-right: 0.5rem;
+    color: #007bff;
+}
+
+/* Стили для карточек API */
+.card .card-header h5 {
+    margin: 0;
+}
+
+.card .card-body ul {
+    margin: 0;
+}
+
+/* Стили для формы создания трассы */
+#create-route-form {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+}
+
+/* Стили для результата API */
+#api-result {
+    background-color: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+}
+
+/* Стили для кнопок тестирования */
+.btn-outline-primary:hover,
+.btn-outline-success:hover,
+.btn-outline-info:hover,
+.btn-outline-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Стили для таблицы трасс - черный текст */
+#routes-table tbody td {
+    color: #000000 !important;
+}
+
+#routes-table tbody td strong {
+    color: #000000 !important;
+}
+
+#routes-table tbody td .text-muted {
+    color: #6c757d !important;
+}
+
+#routes-table tbody td .text-truncate {
+    color: #000000 !important;
+}
+
+/* Стили для бейджей в таблице */
+#routes-table tbody td .badge {
+    /* Цвет текста будет определяться специфичными стилями для сложности */
+}
+
+#routes-table tbody td .badge.bg-warning {
+    color: #000000 !important;
+}
+
+/* Удалены конфликтующие стили для бейджей сложности */
+
+/* ===== СТИЛИ ДЛЯ ЦВЕТОВ НА ГЛАВНОЙ СТРАНИЦЕ ===== */
+/* Цветной текст для бейджей цветов на главной странице */
+#routes-table .badge.color-красный { color: #dc3545 !important; }
+#routes-table .badge.color-синий { color: #007bff !important; }
+#routes-table .badge.color-зеленый { color: #28a745 !important; }
+#routes-table .badge.color-желтый { color: #ffc107 !important; }
+#routes-table .badge.color-оранжевый { color: #fd7e14 !important; }
+#routes-table .badge.color-фиолетовый { color: #6f42c1 !important; }
+#routes-table .badge.color-розовый { color: #e83e8c !important; }
+#routes-table .badge.color-черный { color: #000000 !important; }
+#routes-table .badge.color-белый { color: #6c757d !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+#routes-table .badge.color-серый { color: #6c757d !important; }
+#routes-table .badge.color-коричневый { color: #8b4513 !important; }
+#routes-table .badge.color-бирюзовый { color: #17a2b8 !important; }
+
+/* Переопределение для системных бейджей */
+#routes-table tbody td .badge.bg-info {
+    color: #000000 !important;
+}
+
+#routes-table tbody td .badge.bg-success {
+    color: #000000 !important;
+}
+
+#routes-table tbody td .badge.bg-warning {
+    color: #000000 !important;
+}
+
+/* Стили для ячеек таблицы */
+#routes-table tbody tr td {
+    color: #000000 !important;
+    font-weight: normal;
+}
+
+#routes-table tbody tr td strong {
+    color: #000000 !important;
+    font-weight: bold;
+}
+
+/* Стили для цветного текста в колонке "Цвет" */
+.color-cell {
+    font-weight: bold !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Цвета для текста в зависимости от цвета трассы */
+.color-red { color: #dc3545 !important; }
+.color-blue { color: #007bff !important; }
+.color-green { color: #28a745 !important; }
+.color-yellow { color: #ffc107 !important; }
+.color-orange { color: #fd7e14 !important; }
+.color-purple { color: #6f42c1 !important; }
+.color-pink { color: #e83e8c !important; }
+.color-black { color: #000000 !important; }
+.color-white { color: #6c757d !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+.color-gray { color: #6c757d !important; }
+.color-brown { color: #8b4513 !important; }
+.color-cyan { color: #17a2b8 !important; }
+.color-lime { color: #32cd32 !important; }
+.color-magenta { color: #ff00ff !important; }
+.color-navy { color: #000080 !important; }
+.color-teal { color: #008080 !important; }
+.color-olive { color: #808000 !important; }
+.color-maroon { color: #800000 !important; }
+.color-silver { color: #c0c0c0 !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+.color-gold { color: #ffd700 !important; }
+
+/* Русские названия цветов */
+.color-красный { color: #dc3545 !important; }
+.color-синий { color: #007bff !important; }
+.color-зеленый { color: #28a745 !important; }
+.color-желтый { color: #ffc107 !important; }
+.color-оранжевый { color: #fd7e14 !important; }
+.color-фиолетовый { color: #6f42c1 !important; }
+.color-розовый { color: #e83e8c !important; }
+.color-черный { color: #000000 !important; }
+.color-белый { color: #6c757d !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+.color-серый { color: #6c757d !important; }
+.color-коричневый { color: #8b4513 !important; }
+.color-бирюзовый { color: #17a2b8 !important; }
+.color-лайм { color: #32cd32 !important; }
+.color-пурпурный { color: #ff00ff !important; }
+.color-темно-синий { color: #000080 !important; }
+.color-бирюзовый { color: #008080 !important; }
+.color-оливковый { color: #808000 !important; }
+.color-темно-красный { color: #800000 !important; }
+.color-серебряный { color: #c0c0c0 !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+.color-золотой { color: #ffd700 !important; }
+
+/* Стили для админ панели */
+#admin-routes-table tbody tr td {
+    color: #000000 !important;
+    font-weight: normal;
+}
+
+#admin-routes-table tbody tr td strong {
+    color: #000000 !important;
+    font-weight: bold;
+}
+
+/* ===== СТИЛИ ДЛЯ СЛОЖНОСТИ В АДМИН ПАНЕЛИ ===== */
+/* Новые чистые стили для сложности в админ панели */
+
+#admin-routes-table .badge.difficulty-4,
+#admin-routes-table .badge.difficulty-4-5,
+#admin-routes-table .badge.difficulty-5,
+#admin-routes-table .badge.difficulty-5\+ {
+    background-color: #ffc107 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#admin-routes-table .badge.difficulty-6a,
+#admin-routes-table .badge.difficulty-6a\+ {
+    background-color: #28a745 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#admin-routes-table .badge.difficulty-6b,
+#admin-routes-table .badge.difficulty-6b\+ {
+    background-color: #007bff !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#admin-routes-table .badge.difficulty-6c,
+#admin-routes-table .badge.difficulty-6c\+ {
+    background-color: #6f42c1 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#admin-routes-table .badge.difficulty-7a,
+#admin-routes-table .badge.difficulty-7a\+ {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#admin-routes-table .badge.difficulty-7b,
+#admin-routes-table .badge.difficulty-7b+,
+#admin-routes-table .badge.difficulty-7c,
+#admin-routes-table .badge.difficulty-7c+,
+#admin-routes-table .badge.difficulty-8a,
+#admin-routes-table .badge.difficulty-8a+,
+#admin-routes-table .badge.difficulty-8b,
+#admin-routes-table .badge.difficulty-8b+,
+#admin-routes-table .badge.difficulty-8c,
+#admin-routes-table .badge.difficulty-9a {
+    background-color: #000000 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* ===== СТИЛИ ДЛЯ ЦВЕТОВ В АДМИН ПАНЕЛИ ===== */
+/* Цветной текст для бейджей цветов в админ панели */
+#admin-routes-table .badge.color-красный { color: #dc3545 !important; }
+#admin-routes-table .badge.color-синий { color: #007bff !important; }
+#admin-routes-table .badge.color-зеленый { color: #28a745 !important; }
+#admin-routes-table .badge.color-желтый { color: #ffc107 !important; }
+#admin-routes-table .badge.color-оранжевый { color: #fd7e14 !important; }
+#admin-routes-table .badge.color-фиолетовый { color: #6f42c1 !important; }
+#admin-routes-table .badge.color-розовый { color: #e83e8c !important; }
+#admin-routes-table .badge.color-черный { color: #000000 !important; }
+#admin-routes-table .badge.color-белый { color: #6c757d !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+#admin-routes-table .badge.color-серый { color: #6c757d !important; }
+#admin-routes-table .badge.color-коричневый { color: #8b4513 !important; }
+#admin-routes-table .badge.color-бирюзовый { color: #17a2b8 !important; }
+
+/* ===== ФИНАЛЬНЫЕ СТИЛИ ДЛЯ СЛОЖНОСТИ - УДАЛЕНЫ ===== */
+
+/* ===== ЭКСТРЕННЫЕ СТИЛИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ - УДАЛЕНЫ ===== */
+
+/* ===== СУПЕР ПРИОРИТЕТНЫЕ СТИЛИ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ - УДАЛЕНЫ ===== */
+
+/* ===== ЭКСТРЕННЫЕ СТИЛИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ BOOTSTRAP - УДАЛЕНЫ ===== */
+
+/* ===== ФИНАЛЬНЫЕ СТИЛИ С АТРИБУТАМИ - УДАЛЕНЫ ===== */
+
+/* ===== СТИЛИ ДЛЯ ПРИНУДИТЕЛЬНОГО ПЕРЕОПРЕДЕЛЕНИЯ - УДАЛЕНЫ ===== */
+
+/* ===== СУПЕР СПЕЦИФИЧНЫЕ СТИЛИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ BOOTSTRAP ===== */
+/* Эти стили должны переопределить ВСЕ остальные */
+
+/* Универсальное правило - ВСЕ бейджи сложности должны быть черными */
+.badge[class*="difficulty-"] {
+    color: #000000 !important;
+}
+
+/* Дополнительные правила для заглавных букв с заливкой */
+.badge.difficulty-4,
+.badge.difficulty-4-5,
+.badge.difficulty-5,
+.badge.difficulty-5\+ {
+    background-color: #ffc107 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* Дополнительные правила для данных из базы (строчные буквы) */
+.badge.difficulty-4 {
+    background-color: #ffc107 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-4-5 {
+    background-color: #ffc107 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-6a {
+    background-color: #28a745 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-6b {
+    background-color: #007bff !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-6b\+ {
+    background-color: #007bff !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-6c {
+    background-color: #6f42c1 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-6c\+ {
+    background-color: #6f42c1 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-7a {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-7b {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-7b\+ {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-7c {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-8a {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-8a\+ {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-8b {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-8c {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-9a {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-6A,
+.badge.difficulty-6A+ {
+    background-color: #28a745 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-6B,
+.badge.difficulty-6B+ {
+    background-color: #007bff !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-6C,
+.badge.difficulty-6C+ {
+    background-color: #6f42c1 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-7A,
+.badge.difficulty-7A+ {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+.badge.difficulty-7B,
+.badge.difficulty-7B+,
+.badge.difficulty-7C,
+.badge.difficulty-7C+,
+.badge.difficulty-8A,
+.badge.difficulty-8A+,
+.badge.difficulty-8B,
+.badge.difficulty-8B+,
+.badge.difficulty-8C,
+.badge.difficulty-9A {
+    background-color: #000000 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* Специфичные правила для каждой таблицы */
+#routes-table .badge[class*="difficulty-"],
+#filtered-results .badge[class*="difficulty-"],
+#admin-routes-table .badge[class*="difficulty-"] {
+    color: #000000 !important;
+}
+
+/* Специфичные правила для заглавных букв в каждой таблице с заливкой */
+/* 4-5+ - Желтая заливка */
+#routes-table .badge.difficulty-4,
+#routes-table .badge.difficulty-4-5,
+#routes-table .badge.difficulty-5,
+#routes-table .badge.difficulty-5+,
+#filtered-results .badge.difficulty-4,
+#filtered-results .badge.difficulty-4-5,
+#filtered-results .badge.difficulty-5,
+#filtered-results .badge.difficulty-5+,
+#admin-routes-table .badge.difficulty-4,
+#admin-routes-table .badge.difficulty-4-5,
+#admin-routes-table .badge.difficulty-5,
+#admin-routes-table .badge.difficulty-5\+ {
+    background-color: #ffc107 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* Дополнительные правила для данных из базы в каждой таблице (строчные буквы) */
+#routes-table .badge.difficulty-4,
+#filtered-results .badge.difficulty-4,
+#admin-routes-table .badge.difficulty-4 {
+    background-color: #ffc107 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-4-5,
+#filtered-results .badge.difficulty-4-5,
+#admin-routes-table .badge.difficulty-4-5 {
+    background-color: #ffc107 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-6a,
+#filtered-results .badge.difficulty-6a,
+#admin-routes-table .badge.difficulty-6a {
+    background-color: #28a745 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-6b,
+#filtered-results .badge.difficulty-6b,
+#admin-routes-table .badge.difficulty-6b {
+    background-color: #007bff !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-6b\+,
+#filtered-results .badge.difficulty-6b\+,
+#admin-routes-table .badge.difficulty-6b\+ {
+    background-color: #007bff !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-6c,
+#filtered-results .badge.difficulty-6c,
+#admin-routes-table .badge.difficulty-6c {
+    background-color: #6f42c1 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-6c\+,
+#filtered-results .badge.difficulty-6c\+,
+#admin-routes-table .badge.difficulty-6c\+ {
+    background-color: #6f42c1 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-7a,
+#filtered-results .badge.difficulty-7a,
+#admin-routes-table .badge.difficulty-7a {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-7b,
+#filtered-results .badge.difficulty-7b,
+#admin-routes-table .badge.difficulty-7b {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-7b+,
+#filtered-results .badge.difficulty-7b+,
+#admin-routes-table .badge.difficulty-7b\+ {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-7c,
+#filtered-results .badge.difficulty-7c,
+#admin-routes-table .badge.difficulty-7c {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-8a,
+#filtered-results .badge.difficulty-8a,
+#admin-routes-table .badge.difficulty-8a {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-8a+,
+#filtered-results .badge.difficulty-8a+,
+#admin-routes-table .badge.difficulty-8a\+ {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-8b,
+#filtered-results .badge.difficulty-8b,
+#admin-routes-table .badge.difficulty-8b {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-8c,
+#filtered-results .badge.difficulty-8c,
+#admin-routes-table .badge.difficulty-8c {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+#routes-table .badge.difficulty-9a,
+#filtered-results .badge.difficulty-9a,
+#admin-routes-table .badge.difficulty-9a {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* 6A, 6A+ - Зеленая заливка */
+#routes-table .badge.difficulty-6A,
+#routes-table .badge.difficulty-6A+,
+#filtered-results .badge.difficulty-6A,
+#filtered-results .badge.difficulty-6A+,
+#admin-routes-table .badge.difficulty-6A,
+#admin-routes-table .badge.difficulty-6A+ {
+    background-color: #28a745 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* 6B, 6B+ - Синяя заливка */
+#routes-table .badge.difficulty-6B,
+#routes-table .badge.difficulty-6B+,
+#filtered-results .badge.difficulty-6B,
+#filtered-results .badge.difficulty-6B+,
+#admin-routes-table .badge.difficulty-6B,
+#admin-routes-table .badge.difficulty-6B+ {
+    background-color: #007bff !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* 6C, 6C+ - Фиолетовая заливка */
+#routes-table .badge.difficulty-6C,
+#routes-table .badge.difficulty-6C+,
+#filtered-results .badge.difficulty-6C,
+#filtered-results .badge.difficulty-6C+,
+#admin-routes-table .badge.difficulty-6C,
+#admin-routes-table .badge.difficulty-6C+ {
+    background-color: #6f42c1 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* 7A, 7A+ - Красная заливка */
+#routes-table .badge.difficulty-7A,
+#routes-table .badge.difficulty-7A+,
+#filtered-results .badge.difficulty-7A,
+#filtered-results .badge.difficulty-7A+,
+#admin-routes-table .badge.difficulty-7A,
+#admin-routes-table .badge.difficulty-7A+ {
+    background-color: #dc3545 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* 7B+ и выше - Черная заливка */
+#routes-table .badge.difficulty-7B,
+#routes-table .badge.difficulty-7B+,
+#routes-table .badge.difficulty-7C,
+#routes-table .badge.difficulty-7C+,
+#routes-table .badge.difficulty-8A,
+#routes-table .badge.difficulty-8A+,
+#routes-table .badge.difficulty-8B,
+#routes-table .badge.difficulty-8B+,
+#routes-table .badge.difficulty-8C,
+#routes-table .badge.difficulty-9A,
+#filtered-results .badge.difficulty-7B,
+#filtered-results .badge.difficulty-7B+,
+#filtered-results .badge.difficulty-7C,
+#filtered-results .badge.difficulty-7C+,
+#filtered-results .badge.difficulty-8A,
+#filtered-results .badge.difficulty-8A+,
+#filtered-results .badge.difficulty-8B,
+#filtered-results .badge.difficulty-8B+,
+#filtered-results .badge.difficulty-8C,
+#filtered-results .badge.difficulty-9A,
+#admin-routes-table .badge.difficulty-7B,
+#admin-routes-table .badge.difficulty-7B+,
+#admin-routes-table .badge.difficulty-7C,
+#admin-routes-table .badge.difficulty-7C+,
+#admin-routes-table .badge.difficulty-8A,
+#admin-routes-table .badge.difficulty-8A+,
+#admin-routes-table .badge.difficulty-8B,
+#admin-routes-table .badge.difficulty-8B+,
+#admin-routes-table .badge.difficulty-8C,
+#admin-routes-table .badge.difficulty-9A {
+    background-color: #000000 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* Для основной таблицы */
+html body div.container #routes-table tbody tr td .badge.difficulty-4,
+html body div.container #routes-table tbody tr td .badge.difficulty-4-5,
+html body div.container #routes-table tbody tr td .badge.difficulty-5,
+html body div.container #routes-table tbody tr td .badge.difficulty-5\+,
+html body div.container #routes-table tbody tr td .badge.difficulty-6a,
+html body div.container #routes-table tbody tr td .badge.difficulty-6a\+,
+html body div.container #routes-table tbody tr td .badge.difficulty-6b,
+html body div.container #routes-table tbody tr td .badge.difficulty-6b\+,
+html body div.container #routes-table tbody tr td .badge.difficulty-6c,
+html body div.container #routes-table tbody tr td .badge.difficulty-6c\+,
+html body div.container #routes-table tbody tr td .badge.difficulty-7a,
+html body div.container #routes-table tbody tr td .badge.difficulty-7a\+ {
+    color: #000000 !important;
+}
+
+html body div.container #routes-table tbody tr td .badge.difficulty-7b,
+html body div.container #routes-table tbody tr td .badge.difficulty-7b\+,
+html body div.container #routes-table tbody tr td .badge.difficulty-7c,
+html body div.container #routes-table tbody tr td .badge.difficulty-7c\+,
+html body div.container #routes-table tbody tr td .badge.difficulty-8a,
+html body div.container #routes-table tbody tr td .badge.difficulty-8a\+,
+html body div.container #routes-table tbody tr td .badge.difficulty-8b,
+html body div.container #routes-table tbody tr td .badge.difficulty-8b\+,
+html body div.container #routes-table tbody tr td .badge.difficulty-8c,
+html body div.container #routes-table tbody tr td .badge.difficulty-9a {
+    color: #000000 !important;
+}
+
+/* Для таблицы результатов фильтрации */
+html body div.container #filtered-results .badge.difficulty-4,
+html body div.container #filtered-results .badge.difficulty-4-5,
+html body div.container #filtered-results .badge.difficulty-5,
+html body div.container #filtered-results .badge.difficulty-5\+,
+html body div.container #filtered-results .badge.difficulty-6a,
+html body div.container #filtered-results .badge.difficulty-6a\+,
+html body div.container #filtered-results .badge.difficulty-6b,
+html body div.container #filtered-results .badge.difficulty-6b\+,
+html body div.container #filtered-results .badge.difficulty-6c,
+html body div.container #filtered-results .badge.difficulty-6c\+,
+html body div.container #filtered-results .badge.difficulty-7a,
+html body div.container #filtered-results .badge.difficulty-7a\+ {
+    color: #000000 !important;
+}
+
+html body div.container #filtered-results .badge.difficulty-7b,
+html body div.container #filtered-results .badge.difficulty-7b\+,
+html body div.container #filtered-results .badge.difficulty-7c,
+html body div.container #filtered-results .badge.difficulty-7c\+,
+html body div.container #filtered-results .badge.difficulty-8a,
+html body div.container #filtered-results .badge.difficulty-8a\+,
+html body div.container #filtered-results .badge.difficulty-8b,
+html body div.container #filtered-results .badge.difficulty-8b\+,
+html body div.container #filtered-results .badge.difficulty-8c,
+html body div.container #filtered-results .badge.difficulty-9a {
+    color: #000000 !important;
+}
+
+/* Для админ панели */
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-4,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-4-5,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-5,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-5\+,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-6a,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-6a\+,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-6b,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-6b\+,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-6c,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-6c\+,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-7a,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-7a\+ {
+    color: #000000 !important;
+}
+
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-7b,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-7b\+,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-7c,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-7c\+,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-8a,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-8a\+,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-8b,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-8b\+,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-8c,
+html body div.container #admin-routes-table tbody tr td .badge.difficulty-9a {
+    color: #000000 !important;
+}

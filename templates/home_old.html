@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏔️ Управление API трасс скалодрома</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{% load static %}{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-mountain"></i> API Трасс трудности Скалодрома
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#stats">Статистика</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#api">API</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#test">Тестирование</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Главный контент -->
+    <div class="container mt-4">
+        <!-- Заголовок -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-primary">
+                    <i class="fas fa-mountain"></i> Управление API трасс скалодрома
+                </h1>
+                <p class="lead text-muted">Веб-интерфейс для управления API системы учета трасс</p>
+            </div>
+        </div>
+
+        <!-- Статистика -->
+        <div id="stats" class="row mb-5">
+            <div class="col-12">
+                <h2 class="mb-4"><i class="fas fa-chart-bar"></i> Статистика</h2>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-route fa-2x mb-2"></i>
+                        <h3 class="card-title">{{ total_routes }}</h3>
+                        <p class="card-text">Всего трасс</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-check-circle fa-2x mb-2"></i>
+                        <h3 class="card-title">{{ active_routes }}</h3>
+                        <p class="card-text">Активных трасс</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-pause-circle fa-2x mb-2"></i>
+                        <h3 class="card-title">{{ inactive_routes }}</h3>
+                        <p class="card-text">Неактивных трасс</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-percentage fa-2x mb-2"></i>
+                        <h3 class="card-title">
+                            {% if total_routes > 0 %}
+                                {% widthratio active_routes total_routes 100 %}%
+                            {% else %}
+                                0%
+                            {% endif %}
+                        </h3>
+                        <p class="card-text">Активность</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Распределение по сложности -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="mb-3"><i class="fas fa-chart-pie"></i> Распределение по сложности</h3>
+                <div class="row">
+                    {% for difficulty, stats in difficulty_stats.items %}
+                    <div class="col-md-3 mb-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-{{ difficulty|default:'secondary' }}">
+                                    {% if difficulty == 'easy' %}
+                                        <i class="fas fa-seedling text-success"></i> 4-6А
+                                    {% elif difficulty == 'medium' %}
+                                        <i class="fas fa-leaf text-warning"></i> 6В-6С
+                                    {% elif difficulty == 'hard' %}
+                                        <i class="fas fa-fire text-danger"></i> 7А-7В
+                                    {% elif difficulty == 'expert' %}
+                                        <i class="fas fa-skull text-dark"></i> 7С>
+                                    {% else %}
+                                        <i class="fas fa-question text-secondary"></i> {{ stats.label }}
+                                    {% endif %}
+                                </h5>
+                                <h2 class="text-primary">{{ stats.count }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Последние трассы -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="mb-3"><i class="fas fa-clock"></i> Последние добавленные трассы</h3>
+                {% if recent_routes %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Название</th>
+                                <th>Автор</th>
+                                <th>Сложность</th>
+                                <th>Цвет</th>
+                                <th>Статус</th>
+                                <th>Дата создания</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for route in recent_routes %}
+                            <tr>
+                                <td><strong>{{ route.name }}</strong></td>
+                                <td>{{ route.author }}</td>
+                                <td>
+                                    <span class="badge difficulty-{{ route.difficulty|default:'secondary' }}">
+                                        {% if route.difficulty == '4-5' %}
+                                            <i class="fas fa-seedling"></i> 4-5
+                                        {% elif route.difficulty == '6A' or route.difficulty == '6A+' %}
+                                            <i class="fas fa-leaf"></i> {{ route.difficulty }}
+                                        {% elif route.difficulty == '6B' or route.difficulty == '6B+' or route.difficulty == '6C' or route.difficulty == '6C+' %}
+                                            <i class="fas fa-fire"></i> {{ route.difficulty }}
+                                        {% elif route.difficulty == '7A' or route.difficulty == '7A+' or route.difficulty == '7B' or route.difficulty == '7B+' %}
+                                            <i class="fas fa-bolt"></i> {{ route.difficulty }}
+                                        {% elif route.difficulty == '7C' or route.difficulty == '7C+' or route.difficulty == '8A' or route.difficulty == '8A+' %}
+                                            <i class="fas fa-skull"></i> {{ route.difficulty }}
+                                        {% elif route.difficulty == '8B' or route.difficulty == '8B+' or route.difficulty == '8C' or route.difficulty == '9A' %}
+                                            <i class="fas fa-dragon"></i> {{ route.difficulty }}
+                                        {% else %}
+                                            {{ route.difficulty }}
+                                        {% endif %}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge" style="background-color: {{ route.color }}; color: white;">
+                                        {{ route.color }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if route.is_active %}
+                                        <span class="badge bg-success"><i class="fas fa-check"></i> Активна</span>
+                                    {% else %}
+                                        <span class="badge bg-warning"><i class="fas fa-pause"></i> Неактивна</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ route.created_at|date:"d.m.Y H:i" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Пока нет добавленных трасс
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- API Endpoints -->
+        <div id="api" class="row mb-5">
+            <div class="col-12">
+                <h2 class="mb-4"><i class="fas fa-code"></i> API Endpoints</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="fas fa-list"></i> Основные операции</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li><code>GET /api/routes/</code> - Список трасс</li>
+                                    <li><code>POST /api/routes/</code> - Создание трассы</li>
+                                    <li><code>GET /api/routes/{id}/</code> - Получение трассы</li>
+                                    <li><code>PUT /api/routes/{id}/</code> - Обновление трассы</li>
+                                    <li><code>DELETE /api/routes/{id}/</code> - Удаление трассы</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-layer-group"></i> Массовые операции</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li><code>POST /api/routes/bulk/</code> - Массовое создание</li>
+                                    <li><code>DELETE /api/routes/bulk/</code> - Массовое удаление</li>
+                                    <li><code>POST /api/routes/bulk-update/</code> - Массовое обновление</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="fas fa-search"></i> Поиск и фильтрация</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li><code>GET /api/routes/search/</code> - Расширенный поиск</li>
+                                    <li><code>GET /api/routes/authors/</code> - Список авторов</li>
+                                    <li><code>GET /api/routes/colors/</code> - Список цветов</li>
+                                    <li><code>POST /api/routes/{id}/toggle-active/</code> - Переключение статуса</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-header bg-warning text-white">
+                                <h5 class="mb-0"><i class="fas fa-chart-line"></i> Статистика</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li><code>GET /api/difficulty-levels/</code> - Уровни сложности</li>
+                                    <li><code>GET /api/stats/</code> - Общая статистика</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Тестирование API -->
+        <div id="test" class="row mb-5">
+            <div class="col-12">
+                <h2 class="mb-4"><i class="fas fa-flask"></i> Тестирование API</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Интерактивное тестирование</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Быстрые тесты:</h6>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary" onclick="testAPI('GET', '/api/routes/')">
+                                        <i class="fas fa-list"></i> Получить все трассы
+                                    </button>
+                                    <button class="btn btn-outline-success" onclick="testAPI('GET', '/api/stats/')">
+                                        <i class="fas fa-chart-bar"></i> Получить статистику
+                                    </button>
+                                    <button class="btn btn-outline-info" onclick="testAPI('GET', '/api/difficulty-levels/')">
+                                        <i class="fas fa-layer-group"></i> Уровни сложности
+                                    </button>
+                                    <button class="btn btn-outline-warning" onclick="testAPI('GET', '/api/routes/authors/')">
+                                        <i class="fas fa-users"></i> Список авторов
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Результат:</h6>
+                                <div id="api-result" class="border p-3 bg-light" style="min-height: 200px; max-height: 400px; overflow-y: auto;">
+                                    <p class="text-muted">Нажмите на кнопку для тестирования API...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Создание тестовой трассы -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="mb-3"><i class="fas fa-plus-circle"></i> Создать тестовую трассу</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <form id="create-route-form">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="route-name" class="form-label">Название трассы</label>
+                                    <input type="text" class="form-control" id="route-name" placeholder="Введите название трассы" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="route-author" class="form-label">Автор</label>
+                                    <input type="text" class="form-control" id="route-author" placeholder="Введите имя автора" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="route-difficulty" class="form-label">Сложность</label>
+                                    <select class="form-select" id="route-difficulty" required>
+                                        <option value="">Выберите сложность</option>
+                                        <option value="4-5">4-5 (Начальный)</option>
+                                        <option value="6A">6A (Легкий)</option>
+                                        <option value="6A+">6A+ (Легкий+)</option>
+                                        <option value="6B">6B (Средний)</option>
+                                        <option value="6B+">6B+ (Средний+)</option>
+                                        <option value="6C">6C (Средний-сложный)</option>
+                                        <option value="6C+">6C+ (Средний-сложный+)</option>
+                                        <option value="7A">7A (Сложный)</option>
+                                        <option value="7A+">7A+ (Сложный+)</option>
+                                        <option value="7B">7B (Очень сложный)</option>
+                                        <option value="7B+">7B+ (Очень сложный+)</option>
+                                        <option value="7C">7C (Экспертный)</option>
+                                        <option value="7C+">7C+ (Экспертный+)</option>
+                                        <option value="8A">8A (Профессиональный)</option>
+                                        <option value="8A+">8A+ (Профессиональный+)</option>
+                                        <option value="8B">8B (Элитный)</option>
+                                        <option value="8B+">8B+ (Элитный+)</option>
+                                        <option value="8C">8C (Мировой класс)</option>
+                                        <option value="9A">9A (Легендарный)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="route-color" class="form-label">Цвет</label>
+                                    <input type="text" class="form-control" id="route-color" placeholder="Введите цвет трассы" required>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="route-description" class="form-label">Описание</label>
+                                    <textarea class="form-control" id="route-description" rows="3" placeholder="Введите описание трассы"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> Создать трассу
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подвал -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">
+                <i class="fas fa-mountain"></i> Система управления API трасс скалодрома
+                <br>
+                <small class="text-muted">Создано с использованием Django REST Framework</small>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% load static %}{% static 'js/app.js' %}"></script>
+</body>
+</html>
