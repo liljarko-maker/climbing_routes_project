@@ -204,10 +204,27 @@ function filterRoutes() {
     console.log('Фильтры:', { difficulty, lane, author, dateFilter, searchText, color });
     console.log('Всего трасс для фильтрации:', allRoutes.length);
     
+    // Отладочная информация для первых нескольких трасс
+    if (allRoutes.length > 0) {
+        console.log('Примеры данных трасс:');
+        allRoutes.slice(0, 3).forEach((route, index) => {
+            console.log(`Трасса ${index + 1}:`, {
+                trackLane: route.trackLane,
+                name: route.name,
+                difficulty: route.difficulty,
+                author: route.author,
+                color: route.color
+            });
+        });
+    }
+    
     filteredRoutes = allRoutes.filter(route => {
-        // Фильтр по сложности (проверяем, содержит ли значение сложности выбранную сложность)
-        if (difficulty && !route.difficulty.includes(difficulty)) {
-            return false;
+        // Фильтр по сложности (извлекаем чистую сложность из текста с иконками)
+        if (difficulty) {
+            const cleanDifficulty = route.difficulty.replace(/[^\w\s+-]/g, '').trim();
+            if (!cleanDifficulty.includes(difficulty)) {
+                return false;
+            }
         }
         
         // Фильтр по дорожке
@@ -324,7 +341,6 @@ function createFilteredResultsHTML(container) {
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>№ Трассы</th>
                         <th>Дорожка</th>
                         <th>Название</th>
                         <th>Сложность</th>
@@ -340,7 +356,6 @@ function createFilteredResultsHTML(container) {
     filteredRoutes.forEach(route => {
         html += `
             <tr>
-                <td><strong>№${route.routeNumber}</strong></td>
                 <td><span class="badge bg-info">${route.trackLane}</span></td>
                 <td><strong>${route.name}</strong></td>
                 <td><span class="badge difficulty-${route.difficulty}">${route.difficulty}</span></td>
