@@ -56,20 +56,26 @@ function applyDifficultyStyles() {
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM загружен, начинаем инициализацию фильтрации');
+    
     // Собираем все трассы из таблицы
     collectRoutesFromTable();
+    console.log('Собрано трасс:', allRoutes.length);
     
     // Принудительно применяем стили для сложности
     applyDifficultyStyles();
     
     // Инициализируем фильтры
     initializeFilters();
+    
+    console.log('Инициализация фильтрации завершена');
 });
 
 // Сбор данных о трассах из таблицы
 function collectRoutesFromTable() {
     allRoutes = [];
     const tableRows = document.querySelectorAll('#routes-table tbody tr');
+    console.log('Найдено строк в таблице:', tableRows.length);
     
     tableRows.forEach((row, index) => {
         // Пропускаем строку с сообщением "Нет трасс"
