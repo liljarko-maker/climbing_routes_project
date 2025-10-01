@@ -618,12 +618,16 @@ def home_view(request):
     except Exception as e:
         logger.error(f"Ошибка при загрузке главной страницы: {str(e)}")
         return render(request, 'home.html', {
-            'error': 'Ошибка при загрузке данных из Google Sheets',
+            'error': 'Ошибка при загрузке данных из базы данных',
             'routes': [],
             'total_routes': 0,
             'active_routes': 0,
             'inactive_routes': 0,
+            'new_routes': 0,
+            'old_routes': 0,
             'data_source': 'Ошибка подключения',
+            'authors_list': [],
+            'colors_list': [],
         })
 
 

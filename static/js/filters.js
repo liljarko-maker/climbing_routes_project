@@ -78,22 +78,21 @@ function collectRoutesFromTable() {
         }
         
         // Проверяем, что у строки есть нужные ячейки
-        if (row.cells && row.cells.length >= 8) {
+        if (row.cells && row.cells.length >= 7) {
             const route = {
                 id: row.dataset.routeId || `route_${index}`,
-                routeNumber: row.cells[0] ? row.cells[0].textContent.replace('№', '').trim() : '',
-                trackLane: row.cells[1] ? row.cells[1].textContent.trim() : '',
-                name: row.cells[2] ? row.cells[2].textContent.trim() : '',
-                difficulty: row.cells[3] ? row.cells[3].textContent.trim() : '',
+                trackLane: row.cells[0] ? row.cells[0].textContent.trim() : '',
+                name: row.cells[1] ? row.cells[1].textContent.trim() : '',
+                difficulty: row.cells[2] ? row.cells[2].textContent.trim() : '',
+                author: row.cells[3] ? row.cells[3].textContent.trim() : '',
                 color: row.cells[4] ? row.cells[4].textContent.trim() : '',
-                author: row.cells[5] ? row.cells[5].textContent.trim() : '',
-                setupDate: row.cells[6] ? row.cells[6].textContent.trim() : '',
-                description: row.cells[7] ? row.cells[7].textContent.trim() : '',
+                setupDate: row.cells[5] ? row.cells[5].textContent.trim() : '',
+                description: row.cells[6] ? row.cells[6].textContent.trim() : '',
                 element: row
             };
             
             // Добавляем только если есть основные данные
-            if (route.routeNumber && route.name) {
+            if (route.trackLane && route.name) {
                 allRoutes.push(route);
             }
         }
