@@ -58,6 +58,19 @@ function applyDifficultyStyles() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM загружен, начинаем инициализацию фильтрации');
     
+    // Проверяем наличие элементов
+    const table = document.getElementById('routes-table');
+    const difficultyFilter = document.getElementById('difficultyFilter');
+    const authorFilter = document.getElementById('authorFilter');
+    const colorFilter = document.getElementById('colorFilter');
+    
+    console.log('Найдены элементы:', {
+        table: !!table,
+        difficultyFilter: !!difficultyFilter,
+        authorFilter: !!authorFilter,
+        colorFilter: !!colorFilter
+    });
+    
     // Собираем все трассы из таблицы
     collectRoutesFromTable();
     console.log('Собрано трасс:', allRoutes.length);
@@ -90,8 +103,8 @@ function collectRoutesFromTable() {
                 trackLane: row.cells[0] ? row.cells[0].textContent.trim() : '',
                 name: row.cells[1] ? row.cells[1].textContent.trim() : '',
                 difficulty: row.cells[2] ? row.cells[2].textContent.trim() : '',
-                author: row.cells[3] ? row.cells[3].textContent.trim() : '',
-                color: row.cells[4] ? row.cells[4].textContent.trim() : '',
+                color: row.cells[3] ? row.cells[3].textContent.trim() : '',
+                author: row.cells[4] ? row.cells[4].textContent.trim() : '',
                 setupDate: row.cells[5] ? row.cells[5].textContent.trim() : '',
                 description: row.cells[6] ? row.cells[6].textContent.trim() : '',
                 element: row
