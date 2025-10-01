@@ -921,6 +921,52 @@ def check_admin_auth(request):
     return 'admin_id' in request.session
 
 
+@api_view(['POST'])
+def create_admin_user(request):
+    """Создание админ пользователя"""
+    try:
+        username = request.data.get('username')
+        password = request.data.get('password')
+        full_name = request.data.get('full_name', 'Администратор')
+        
+        if not username or not password:
+            return Response({
+                'success': False,
+                'message': 'Логин и пароль обязательны'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Проверяем, существует ли уже такой пользователь
+        if AdminUser.objects.filter(username=username).exists():
+            return Response({
+                'success': False,
+                'message': 'Пользователь с таким логином уже существует'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Создаем нового админ пользователя
+        admin = AdminUser.objects.create(
+            username=username,
+            full_name=full_name,
+            is_active=True
+        )
+        admin.set_password(password)
+        admin.save()
+        
+        logger.info(f"Создан новый админ пользователь: {username}")
+        
+        return Response({
+            'success': True,
+            'message': f'Админ пользователь {username} создан успешно',
+            'admin_id': admin.id
+        }, status=status.HTTP_201_CREATED)
+        
+    except Exception as e:
+        logger.error(f"Ошибка при создании админ пользователя: {e}")
+        return Response({
+            'success': False,
+            'message': f'Ошибка при создании админ пользователя: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 def admin_panel_view(request):
     """Админ панель с проверкой аутентификации"""
     # Проверяем аутентификацию

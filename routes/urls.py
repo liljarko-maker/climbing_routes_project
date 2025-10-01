@@ -28,6 +28,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('admin/', views.admin_panel_view, name='admin-panel'),
+    path('admin/create/', views.create_admin_user, name='create-admin'),
     
     # Экспорт данных
     path('routes/export-csv/', views.export_routes_csv, name='export-routes-csv'),

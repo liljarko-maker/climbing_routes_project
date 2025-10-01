@@ -13,7 +13,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-secret-key-here'
 
 # Hosts/domain names that are valid for this site
 ALLOWED_HOSTS = [
-    'liljarko-maker.pythonanywhere.com',  # Замените на ваш домен
+    'koterik.pythonanywhere.com',  # Ваш домен на PythonAnywhere
+    'liljarko-maker.pythonanywhere.com',  # Резервный домен
     '127.0.0.1',
     'localhost',
 ]
@@ -39,6 +40,12 @@ DATABASES = {
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
+
+# Session settings
+SESSION_COOKIE_SECURE = False  # Для HTTP (не HTTPS)
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_AGE = 86400  # 24 часа
+SESSION_SAVE_EVERY_REQUEST = True
 
 # Logging
 LOGGING = {

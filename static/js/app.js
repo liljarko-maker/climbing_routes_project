@@ -445,7 +445,6 @@ function createTableRow(route) {
         '<span class="text-muted">-</span>';
     
     row.innerHTML = `
-        <td><strong>№${route.route_number || ''}</strong></td>
         <td><span class="badge bg-info">${route.track_number || ''}</span></td>
         <td><strong>${route.name || ''}</strong></td>
         <td>
