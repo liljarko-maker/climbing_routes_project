@@ -91,6 +91,9 @@ function collectRoutesFromTable() {
                 element: row
             };
             
+            // Отладочная информация
+            console.log('Собранная трасса:', route);
+            
             // Добавляем только если есть основные данные
             if (route.trackLane && route.name) {
                 allRoutes.push(route);
@@ -152,12 +155,17 @@ function populateColorFilter() {
 
 // Основная функция фильтрации
 function filterRoutes() {
+    console.log('Функция filterRoutes вызвана');
+    
     const difficulty = document.getElementById('difficultyFilter').value;
     const lane = document.getElementById('laneFilter').value;
     const author = document.getElementById('authorFilter').value;
     const dateFilter = document.getElementById('dateFilter').value;
     const searchText = document.getElementById('searchInput').value.toLowerCase();
     const color = document.getElementById('colorFilter').value;
+    
+    console.log('Фильтры:', { difficulty, lane, author, dateFilter, searchText, color });
+    console.log('Всего трасс для фильтрации:', allRoutes.length);
     
     filteredRoutes = allRoutes.filter(route => {
         // Фильтр по сложности
@@ -192,6 +200,8 @@ function filterRoutes() {
         
         return true;
     });
+    
+    console.log('Отфильтровано трасс:', filteredRoutes.length);
     
     // Обновляем отображение
     updateTableDisplay();
