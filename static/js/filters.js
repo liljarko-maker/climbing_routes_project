@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Сбор данных о трассах из таблицы
 function collectRoutesFromTable() {
     allRoutes = [];
-    const tableRows = document.querySelectorAll('#routes-table tbody tr');
+    const tableRows = document.querySelectorAll('#routes-table tbody tr, #routes-table-body tr');
     console.log('Найдено строк в таблице:', tableRows.length);
     
     tableRows.forEach((row, index) => {
