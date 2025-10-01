@@ -313,8 +313,16 @@ function updateTableDisplay() {
     const filteredContainer = document.getElementById('filtered-routes-container');
     const originalTable = document.getElementById('routes');
     
-    if (filteredRoutes.length === 0) {
-        // Скрываем блок результатов и показываем оригинальную таблицу
+    // Проверяем, применены ли фильтры
+    const hasActiveFilters = document.getElementById('difficultyFilter').value || 
+                            document.getElementById('laneFilter').value || 
+                            document.getElementById('authorFilter').value || 
+                            document.getElementById('dateFilter').value || 
+                            document.getElementById('searchInput').value || 
+                            document.getElementById('colorFilter').value;
+    
+    if (!hasActiveFilters) {
+        // Если фильтры не применены, показываем оригинальную таблицу
         if (filteredResultsDiv) filteredResultsDiv.style.display = 'none';
         if (originalTable) originalTable.style.display = 'block';
         
@@ -323,11 +331,11 @@ function updateTableDisplay() {
             route.element.style.display = '';
         });
     } else {
-        // Скрываем оригинальную таблицу и показываем результаты фильтрации
+        // Если фильтры применены, показываем результаты фильтрации
         if (originalTable) originalTable.style.display = 'none';
         if (filteredResultsDiv) filteredResultsDiv.style.display = 'block';
         
-        // Создаем HTML для отфильтрованных трасс
+        // Создаем HTML для отфильтрованных трасс (включая случай пустых результатов)
         createFilteredResultsHTML(filteredContainer);
     }
 }
@@ -335,6 +343,41 @@ function updateTableDisplay() {
 // Создание HTML для отфильтрованных результатов
 function createFilteredResultsHTML(container) {
     if (!container) return;
+    
+    // Проверяем, есть ли результаты
+    if (filteredRoutes.length === 0) {
+        // Получаем информацию о примененных фильтрах
+        const activeFilters = [];
+        const difficulty = document.getElementById('difficultyFilter').value;
+        const lane = document.getElementById('laneFilter').value;
+        const author = document.getElementById('authorFilter').value;
+        const dateFilter = document.getElementById('dateFilter').value;
+        const searchText = document.getElementById('searchInput').value;
+        const color = document.getElementById('colorFilter').value;
+        
+        if (difficulty) activeFilters.push(`Сложность: ${difficulty}`);
+        if (lane) activeFilters.push(`Дорожка: ${lane}`);
+        if (author) activeFilters.push(`Автор: ${author}`);
+        if (dateFilter) activeFilters.push(`Дата: ${dateFilter}`);
+        if (searchText) activeFilters.push(`Поиск: "${searchText}"`);
+        if (color) activeFilters.push(`Цвет: ${color}`);
+        
+        const filtersText = activeFilters.length > 0 ? 
+            `<p class="mb-2"><strong>Примененные фильтры:</strong><br><small class="text-muted">${activeFilters.join(', ')}</small></p>` : '';
+        
+        container.innerHTML = `
+            <div class="alert alert-info text-center" role="alert">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Нет трасс с такими фильтрами</strong>
+                ${filtersText}
+                <p class="mb-0 mt-2">Попробуйте изменить критерии поиска или очистить фильтры</p>
+                <button class="btn btn-outline-primary btn-sm mt-3" onclick="clearAllFilters()">
+                    <i class="fas fa-times me-1"></i> Очистить все фильтры
+                </button>
+            </div>
+        `;
+        return;
+    }
     
     let html = `
         <div class="table-responsive">
@@ -409,6 +452,11 @@ function clearFilters() {
     filteredRoutes = [...allRoutes];
     updateTableDisplay();
     updateFilterResults();
+}
+
+// Алиас для кнопки "Очистить все фильтры"
+function clearAllFilters() {
+    clearFilters();
 }
 
 
