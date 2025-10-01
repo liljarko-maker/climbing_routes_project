@@ -98,15 +98,33 @@ function collectRoutesFromTable() {
         
         // Проверяем, что у строки есть нужные ячейки
         if (row.cells && row.cells.length >= 7) {
+            // Извлекаем данные из ячеек, учитывая HTML структуру
+            const trackLaneCell = row.cells[0];
+            const nameCell = row.cells[1];
+            const difficultyCell = row.cells[2];
+            const colorCell = row.cells[3];
+            const authorCell = row.cells[4];
+            const setupDateCell = row.cells[5];
+            const descriptionCell = row.cells[6];
+            
+            // Извлекаем чистые значения, убирая HTML теги и лишние символы
+            const trackLane = trackLaneCell ? trackLaneCell.textContent.trim() : '';
+            const name = nameCell ? nameCell.textContent.trim() : '';
+            const difficulty = difficultyCell ? difficultyCell.textContent.trim().replace(/\s+/g, ' ').trim() : '';
+            const color = colorCell ? colorCell.textContent.trim() : '';
+            const author = authorCell ? authorCell.textContent.trim() : '';
+            const setupDate = setupDateCell ? setupDateCell.textContent.trim() : '';
+            const description = descriptionCell ? descriptionCell.textContent.trim() : '';
+            
             const route = {
                 id: row.dataset.routeId || `route_${index}`,
-                trackLane: row.cells[0] ? row.cells[0].textContent.trim() : '',
-                name: row.cells[1] ? row.cells[1].textContent.trim() : '',
-                difficulty: row.cells[2] ? row.cells[2].textContent.trim() : '',
-                color: row.cells[3] ? row.cells[3].textContent.trim() : '',
-                author: row.cells[4] ? row.cells[4].textContent.trim() : '',
-                setupDate: row.cells[5] ? row.cells[5].textContent.trim() : '',
-                description: row.cells[6] ? row.cells[6].textContent.trim() : '',
+                trackLane: trackLane,
+                name: name,
+                difficulty: difficulty,
+                color: color,
+                author: author,
+                setupDate: setupDate,
+                description: description,
                 element: row
             };
             
@@ -114,7 +132,7 @@ function collectRoutesFromTable() {
             console.log('Собранная трасса:', route);
             
             // Добавляем только если есть основные данные
-            if (route.trackLane && route.name) {
+            if (route.name && route.name !== '-') {
                 allRoutes.push(route);
             }
         }
@@ -187,8 +205,8 @@ function filterRoutes() {
     console.log('Всего трасс для фильтрации:', allRoutes.length);
     
     filteredRoutes = allRoutes.filter(route => {
-        // Фильтр по сложности
-        if (difficulty && route.difficulty !== difficulty) {
+        // Фильтр по сложности (проверяем, содержит ли значение сложности выбранную сложность)
+        if (difficulty && !route.difficulty.includes(difficulty)) {
             return false;
         }
         
