@@ -69,12 +69,19 @@ class RouteListCreateView(generics.ListCreateAPIView):
         try:
             serializer = self.get_serializer(data=request.data)
             if serializer.is_valid():
-                route = serializer.save()
+                try:
+                    route = serializer.save()
+                except ValidationError as ve:
+                    logger.warning(f"Ошибка валидации модели при создании трассы: {ve.message_dict if hasattr(ve, 'message_dict') else str(ve)}")
+                    return Response(getattr(ve, 'message_dict', {'__all__': [str(ve)]}), status=status.HTTP_400_BAD_REQUEST)
                 logger.info(f"Создана новая трасса: {route.name} (ID: {route.id})")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 logger.warning(f"Ошибка валидации при создании трассы: {serializer.errors}")
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ValidationError as ve:
+            logger.warning(f"Ошибка валидации модели при создании трассы (внешний catch): {ve}")
+            return Response(getattr(ve, 'message_dict', {'__all__': [str(ve)]}), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             logger.error(f"Ошибка при создании трассы: {str(e)}")
             return Response(

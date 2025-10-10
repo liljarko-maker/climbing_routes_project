@@ -128,12 +128,34 @@ class Route(models.Model):
     def clean(self):
         """Валидация модели"""
         from django.core.exceptions import ValidationError
+        from datetime import datetime, date
         
         # Проверяем, что на одной дорожке не больше 4 трасс
         if self.track_lane:
             existing_routes = Route.objects.filter(track_lane=self.track_lane).exclude(pk=self.pk)
             if existing_routes.count() >= 4:
                 raise ValidationError(f'На дорожке {self.track_lane} уже максимальное количество трасс (4)')
+
+            # Запрет двух трасс одного цвета на одной дорожке (без учета регистра)
+            if self.color:
+                same_color_qs = Route.objects.filter(
+                    track_lane=self.track_lane,
+                    color__iexact=self.color
+                ).exclude(pk=self.pk)
+                if same_color_qs.exists():
+                    raise ValidationError(
+                        f"На дорожке {self.track_lane} уже есть трасса с цветом '{self.color}'"
+                    )
+
+        # Дата накрутки не может быть в будущем (ожидается формат DD.MM.YYYY)
+        if self.setup_date:
+            try:
+                parsed = datetime.strptime(self.setup_date.strip(), "%d.%m.%Y").date()
+                if parsed > date.today():
+                    raise ValidationError("Дата накрутки не может быть в будущем")
+            except ValueError:
+                # Формат даты проверяется на уровне сериализатора; здесь дублируем защиту
+                raise ValidationError("Дата накрутки должна быть в формате DD.MM.YYYY")
         
         # Проверяем дубликаты на той же и смежных дорожках (±1)
         # Критерии дубликата: совпадают название (без учета регистра и лишних пробелов),
