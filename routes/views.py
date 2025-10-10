@@ -114,7 +114,11 @@ class RouteDetailView(generics.RetrieveUpdateDestroyAPIView):
             instance = self.get_object()
             serializer = self.get_serializer(instance, data=request.data, partial=kwargs.get('partial', False))
             if serializer.is_valid():
-                route = serializer.save()
+                try:
+                    route = serializer.save()
+                except ValidationError as ve:
+                    logger.warning(f"Ошибка валидации модели при обновлении трассы: {ve.message_dict if hasattr(ve, 'message_dict') else str(ve)}")
+                    return Response(getattr(ve, 'message_dict', {'__all__': [str(ve)]}), status=status.HTTP_400_BAD_REQUEST)
                 logger.info(f"Обновлена трасса: {route.name} (ID: {route.id})")
                 return Response(serializer.data)
             else:
@@ -126,6 +130,9 @@ class RouteDetailView(generics.RetrieveUpdateDestroyAPIView):
                 {'error': 'Трасса не найдена'}, 
                 status=status.HTTP_404_NOT_FOUND
             )
+        except ValidationError as ve:
+            logger.warning(f"Ошибка валидации модели при обновлении трассы (внешний catch): {ve}")
+            return Response(getattr(ve, 'message_dict', {'__all__': [str(ve)]}), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             logger.error(f"Ошибка при обновлении трассы: {str(e)}")
             return Response(
