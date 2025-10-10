@@ -121,7 +121,8 @@ class Route(models.Model):
             existing_routes_on_lane = Route.objects.filter(track_lane=self.track_lane).exclude(pk=self.pk)
             position_on_lane = existing_routes_on_lane.count()  # 0, 1, 2, 3
             self.route_number = (self.track_lane - 1) * 4 + position_on_lane + 1
-        
+        # Запускаем полную валидацию модели перед сохранением, чтобы ограничения сработали везде
+        self.full_clean()
         super().save(*args, **kwargs)
     
     def clean(self):
@@ -133,6 +134,32 @@ class Route(models.Model):
             existing_routes = Route.objects.filter(track_lane=self.track_lane).exclude(pk=self.pk)
             if existing_routes.count() >= 4:
                 raise ValidationError(f'На дорожке {self.track_lane} уже максимальное количество трасс (4)')
+        
+        # Проверяем дубликаты на той же и смежных дорожках (±1)
+        # Критерии дубликата: совпадают название (без учета регистра и лишних пробелов),
+        # сложность и цвет (без учета регистра и пробелов)
+        if self.track_lane and self.name and self.difficulty and self.color:
+            normalized_name = (self.name or '').strip().lower()
+            normalized_color = (self.color or '').strip().lower()
+            lanes_to_check = [self.track_lane]
+            if self.track_lane > 1:
+                lanes_to_check.append(self.track_lane - 1)
+            if self.track_lane < 35:
+                lanes_to_check.append(self.track_lane + 1)
+            duplicates_qs = (
+                Route.objects
+                .filter(track_lane__in=lanes_to_check)
+                .exclude(pk=self.pk)
+            )
+            for r in duplicates_qs:
+                if (r.name or '').strip().lower() == normalized_name \
+                   and (r.difficulty or '') == self.difficulty \
+                   and (r.color or '').strip().lower() == normalized_color:
+                    adjacent_note = 'смежной ' if r.track_lane != self.track_lane else ''
+                    raise ValidationError(
+                        f"Похожая трасса уже существует на {adjacent_note}дорожке {r.track_lane}: {r.name} ({r.difficulty}, {r.color})"
+                    )
+        
     
     @classmethod
     def renumber_routes(cls):
