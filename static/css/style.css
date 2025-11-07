@@ -1,9 +1,21 @@
-/* Page title spacing tweak */
+/* Page title spacing and color */
 .page-title {
-  margin-bottom: 1rem !important;
+  margin-bottom: 1.5rem !important;
 }
 .page-title .display-4 {
   margin-bottom: 0;
+  color: #343a40 !important; /* dark gray, override .text-primary */
+  font-weight: bold;
+}
+
+/* Ensure mountain icon matches title color */
+.page-title .display-4 .fas {
+  color: #343a40 !important;
+}
+
+/* Center the 'Краткая статистика' subtitle */
+#stats h2 {
+  text-align: center;
 }
 
 /* Filters section spacing (desktop defaults, modestly tighter) */

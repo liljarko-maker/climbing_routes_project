@@ -4,9 +4,9 @@
 
 /* Улучшения для навигации на мобильных */
 @media (max-width: 767.98px) {
-    /* Заголовок страницы компактнее */
+    /* Заголовок страницы: чуть больше отступ на мобильных */
     .page-title {
-        margin-bottom: 0.5rem !important;
+        margin-bottom: 1rem !important;
     }
     .page-title .display-4 {
         font-size: 1.6rem;
