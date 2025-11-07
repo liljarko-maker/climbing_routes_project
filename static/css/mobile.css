@@ -4,6 +4,14 @@
 
 /* Улучшения для навигации на мобильных */
 @media (max-width: 767.98px) {
+    /* Заголовок страницы компактнее */
+    .page-title {
+        margin-bottom: 0.5rem !important;
+    }
+    .page-title .display-4 {
+        font-size: 1.6rem;
+        line-height: 1.2;
+    }
     
     /* Навигация */
     .navbar-toggler {
@@ -49,6 +57,11 @@
         -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
         border: 1px solid #dee2e6;
     }
+    .table th,
+    .table td {
+        vertical-align: middle;
+        padding: 0.3rem 0.4rem;
+    }
     
     .table th,
     .table td {
@@ -67,9 +80,13 @@
     /* Улучшения для фильтров */
     .filter-section {
         background-color: #f8f9fa;
-        padding: 1rem;
+        padding: 0.5rem;
         border-radius: 10px;
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    .filter-section h4 {
+        margin-bottom: 0.4rem;
+        font-size: 1rem;
     }
     
     .filter-section .row {
@@ -112,7 +129,10 @@
     /* Формы */
     .form-label {
         font-weight: 600;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.2rem;
+    }
+    #filter-results {
+        font-size: 0.8rem;
     }
     
     .form-control:focus,

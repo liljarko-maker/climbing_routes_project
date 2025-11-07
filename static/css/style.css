@@ -1,3 +1,31 @@
+/* Page title spacing tweak */
+.page-title {
+  margin-bottom: 1rem !important;
+}
+.page-title .display-4 {
+  margin-bottom: 0;
+}
+
+/* Filters section spacing (desktop defaults, modestly tighter) */
+.filter-section .card-body {
+  padding: 0.75rem 0.75rem;
+}
+.filter-section h4 {
+  margin-bottom: 0.5rem;
+}
+.filter-section .row.g-3 {
+  --bs-gutter-x: 0.75rem;
+  --bs-gutter-y: 0.5rem;
+}
+#filter-results {
+  font-size: 0.9rem;
+}
+
+/* Tighter table cell padding (desktop) */
+table.table th,
+table.table td {
+  padding: 0.45rem 0.5rem;
+}
 /* Основные стили */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
